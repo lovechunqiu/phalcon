@@ -9,13 +9,13 @@ class ErrorController extends ControllerBase
    
     public function indexAction()
     {       
-      p('demoColler index action');   
+      p('demoColler index  040 action');   
         
     }
     
     public function show404Action()
     {  
-        p('demoColler demo action');   
+        p('demoColler 404  demo action');   
     }
      
 }

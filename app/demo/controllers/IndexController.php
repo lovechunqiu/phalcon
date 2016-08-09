@@ -12,7 +12,7 @@ class IndexController extends ControllerBase
       //$_SESSION['aaa'] = time();
       
       session(['key'=>'userSessionInfo','value'=>time()],'set'); 
-      p(session(),Com::getData());       
+      p(session(),$_SERVER,Com::getData());       
       $this->view->pick('index/index');
         
     }
