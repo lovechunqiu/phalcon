@@ -27,9 +27,21 @@ phpinfo(); enjoy it! phalcon 3.0
 
 install xdebug like this
 
-check xdebug.so path 
-zend_extension=/opt/php55/lib/php/extensions/????/xdebug.so
-xdebug.remote_enable=1
-xdebug.remote_host=localhost
-xdebug.remote_port=9001
-xdebug.remote_handler=dbgp
+#https://pecl.php.net/package/xdebug
+tar -zxvf xdebug-2.3.3.tgz 
+cd xdebug-2.3.3
+/opt/php5520/bin/phpize
+./configure --with-php-config=/opt/php5520/bin/php-config  
+make && make install
+cd ..
+ls
+
+#vim /opt/php5520/etc/php.ini 
+
+#zend_extension=/opt/php5520/lib/php/extensions/debug-non-zts-20121212/xdebug.so
+#xdebug.remote_enable=1
+#xdebug.remote_host=localhost
+#xdebug.remote_port=9000
+#xdebug.remote_handler=dbgp
+
+#service php-fpm-9001 restart
