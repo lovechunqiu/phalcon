@@ -1,13 +1,4 @@
 <?php
-
-//ini_set('display_errors',1);
-//ini_set('log_errors',1); 
-//ini_set('error_log',WEB_ROOT.'cache/log/error/'.APP_FILE_NAME.'/'. date('Y-m-d') . '.log');  
-
-// 当前app 的配置文件
-/*
- * GRANT ALL PRIVILEGES ON china.* TO yang@'192.168.1.%' IDENTIFIED BY 'yangx'; GRANT ALL PRIVILEGES ON china.* TO yang@'127.0.0.1' IDENTIFIED BY 'yangx'; FLUSH PRIVILEGES;
- */
 return new \Phalcon\Config(
     array(
         'databases' => array(
@@ -24,21 +15,7 @@ return new \Phalcon\Config(
                     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
                     PDO::ATTR_CASE => PDO::CASE_NATURAL
                 ),                    
-            ),
-            'jiangyingying' => array(
-                'working' => true,
-                'debug' => true,
-                'adapter' => 'Mysql',
-                'host' => '127.0.0.1',
-                'port' => '3306',
-                'username' => 'root',
-                'password' => '111111',
-                'dbname' => 'jiangyingying',
-                "options" => array(
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
-                    PDO::ATTR_CASE => PDO::CASE_NATURAL
-                ),                    
-            )            
+            ),                       
         ),
         'caches' => array(
             'viewFileCache' => array(

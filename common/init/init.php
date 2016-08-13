@@ -2,16 +2,20 @@
 error_reporting(E_ALL); 
 header('Content-Type:text/html;charset=utf-8');
 date_default_timezone_set("Etc/GMT-8"); 
-//session_start();
+/*
+ * 常量定义
+ */
+//时间
+define('TIME', time());
+//当前格式化之后的时间
+define('DATE', date('Y-m-d H:i:s',TIME));
+
 //init common function  
 require_once(WEB_ROOT.'common/library/functions.php'); 
-
-
 
 //配置文件
 use Phalcon\Config\Adapter\Ini as ConfigIni; 
 use Phalcon\Config as Config;
-
 use Phalcon\Mvc\View as View;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\DI\FactoryDefault as FactoryDefault;
@@ -30,18 +34,10 @@ use Phalcon\Mvc\Router as Router;
 use Phalcon\DI\FactoryDefault\CLI as CliDI; 
 
 
-//require_once(WEB_ROOT.'common/config/initCommon.php');  
-//加载配置文件
-//检测没有就初始化
-$config = require_once APP_PATH.'config/config.php';      
- 
-//throwError(11);    
-//应用引导文件 定义目录啥的
-$registerDirs = array(
-    $config->application->controllersDir,
-    $config->application->viewsDir,  
-);
 
+
+//加载配置文件
+$config = require_once APP_PATH.'config/'.ENVIROMENT.'Config.php';      
 $loader = new \Phalcon\Loader();
  
 //加载命名空间
@@ -51,14 +47,16 @@ $loader = new \Phalcon\Loader();
 //    'M\System' =>WEB_ROOT . $config->application->modelsDir.'system/',
 //))->register();
 
-//app配置与共用配置合并
-$registerDirs = array_merge($registerDirs,array(
-        WEB_ROOT . $config->application->pluginsDir,
-        WEB_ROOT . $config->application->libraryDir,
-        WEB_ROOT . $config->application->modelsDir,        
-));
+//应用引导文件 定义目录啥的
+$registerDirs = array(
+    $config->application->controllersDir,
+    $config->application->viewsDir,  
+    WEB_ROOT . $config->application->pluginsDir,
+    WEB_ROOT . $config->application->libraryDir,
+    WEB_ROOT . $config->application->modelsDir,           
+);
 
-//p($registerDirs);die;
+
 //注册目录
 $loader->registerDirs($registerDirs)->register();
 

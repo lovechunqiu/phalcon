@@ -12,7 +12,8 @@ define('APP_FILE_NAME', pathinfo($_SERVER['SCRIPT_NAME'])['filename']);
 define('APP_PATH', WEB_ROOT . 'app/' . APP_FILE_NAME . '/');
 //启动应用
 define('DEBUG', true);
-
+//项目环境 develop,sandbox,productive
+define('ENVIROMENT','develop');
 
 try {
     require_once WEB_ROOT . 'common/init/init.php';
@@ -22,13 +23,13 @@ try {
     echo $getContent;
     
 } catch (\Phalcon\Exception $e) {
-    p('error');
+    p($e->getMessage());die;
     phalconErrorLog($e);
 } catch (\PDOException $e) {
-    p('error');
+   p($e->getMessage());die;
     phalconErrorLog($e, 'phalconPdoError');
 } catch (\Exception $e) {
-    p('error');
+   p($e->getMessage());die;
     phalconErrorLog($e, 'phalconDefaultError');
 }
 ?>

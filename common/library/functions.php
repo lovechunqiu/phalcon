@@ -1,64 +1,93 @@
 <?php
 
+/**
+ * cookie manage   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $name 
+ * @param   string $value
+ * @return  boolen             
+ * @example  
+ * set cookie('name','value')    
+ * get one cookie('name') 
+ * get all cookie() 
+ * del one cookie('name',null)
+ * @todo        
+ * @doc //https://github.com/phalcon/cphalcon/blob/master/phalcon/http/response/cookies.zep      
+ */
 
-function session($data = array(),$ope = 'get'){
-    
-    $session = Com::getDIServer('session');  
+function cookie($name = '', $value = '') {
      
-    if($ope=='destroy'){    
-        return $session->destroy();
-    }    
-    
-    if(empty($data)) return $_SESSION; 
-    
-    //读取
-    if($ope=='get'){
-        if($session->has($data)){
-            return $session->get($data);
-        }else{
-            return false;
-        }
-    } 
-    
-    //设置
-    if($ope=='set'){
-        $session->set($data['key'],$data['value']);
+    $cookies = Com::getDIServer('cookies');
+    $cookieConfig = Com::getDIServer('config')->application->cookie->toArray();
+    //del name
+    if (!empty($name) && $value === null) {
+        $cookies->get($name)->delete();
+        return $cookies->has($name) ? false : true;
     }
-    
-    //删除
-    if($ope=='del'){    
-        $session->remove($data); 
-    }      
-    
-    return true;    
+
+    //get all
+    if (empty($name) && empty($value)) {
+        return $_COOKIE;
+    }
+
+    //set name
+    if (!empty($name) && !empty($value)) {
+        $cookies->useEncryption($cookieConfig['useEncryption'])->set($name, $value, $cookieConfig['expire'], $cookieConfig['path'])->send();
+        //p($cookies->get($name)->setPath('/index/'));die;
+        return $cookies->has($name);
+    }
+
+    //get name
+    if (!empty($name) && empty($value)) {
+        return $cookies->has($name) ? $cookies->get($name)->getValue() : false;
+    }
 }
 
+/**
+ * session manage   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $name 
+ * @param   string $value
+ * @return  boolen             
+ * @example  
+ * set session('name','value')    
+ * get one session('name') 
+ * get all session() 
+ * del one session('name',null)
+ * destroy session(null)
+ * @todo              
+ */
+function session($name = '', $value = '') {
+    $session = Com::getDIServer('session');
 
-//https://github.com/phalcon/cphalcon/blob/master/phalcon/http/response/cookies.zep
-function cookie($data = array(),$ope = 'get'){
-    if(empty($data)) return $_COOKIE; 
-    $cookies = Com::getDIServer('cookies');    
-    //读取
-    if($ope=='get'){
-        if($cookies->has($data)){
-            return $cookies->get($data)->getValue();
-        }else{
-            return false;
-        }
-    } 
-    
-    //设置
-    if($ope=='set'){
-        if(empty($data['expire'])) $data['expire'] = time()+60*60*24;
-        $cookies->set($data['key'],$data['value'], $data['expire'])->send();
+    //del name
+    if (!empty($name) && $value === null) {
+        $session->remove($name);
+        return $session->has($name) ? false : true;
     }
-    
-    //删除
-    if($ope=='del'){    
-        $cookies->get($data)->delete();
+
+    //destroy session
+    if ($name === null) {
+        return $session->destroy();
     }
-    
-    return true;    
+
+    //get all
+    if (empty($name) && empty($value)) {
+        return $_SESSION;
+    }
+
+    //set name
+    if (!empty($name) && !empty($value)) {
+        $session->set($name, $value);
+        return $session->has($name);
+    }
+
+    //get name
+    if (!empty($name) && empty($value)) {
+        return $session->has($name) ? $session->get($name) : false;
+    }
 }
 
 /**
@@ -66,49 +95,39 @@ function cookie($data = array(),$ope = 'get'){
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string $dirPath 
- * @return             
+ * @return  boolen             
  * @example  
- * p(__DIR__,1,true,['hello'=>'world']);    
- * p(__DIR__,1,true,['hello'=>'world'],'noexit);   
+ * mmkdir(WEB_ROOT.'cache/mkdirdemo')      
  * @todo error             
  */
+function mmkdir($dirPath) {
+    if (isset(pathinfo($dirPath)['extension'])) {
+        $dirPath = dirname($dirPath);
+    }
 
-function mmkdir($dirPath){     
-    if(isset(pathinfo($dirPath)['extension'])){
-         $dirPath = dirname($dirPath);          
-    }            
-    
-    if(!is_dir($dirPath)){
-        if(!mkdir($dirPath, 0755, TRUE)){
-            throwError($dirPath.'mkdir error');
-        }         
-    }        
+    if (!is_dir($dirPath)) {
+        if (!mkdir($dirPath, 0755, TRUE)) {
+            throwError($dirPath . 'mkdir error');
+        }
+    }
+
     return true;
 }
 
 /**
- * print args if last args is 'noexit' mean not use exit   
+ * print args  
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string int bool array res obj ……
  * @return             
  * @example  
- * p(__DIR__,1,true,['hello'=>'world']);    
- * p(__DIR__,1,true,['hello'=>'world'],'noexit);   
+ * p(__DIR__,1,true,['hello'=>'world']);       
  * @todo              
  */
 function p() {
     $args = func_get_args();
-    $isExit = array_pop($args);
-     
     //https://docs.phalconphp.com/zh/latest/api/Phalcon_Debug_Dump.html         
     foreach ($args as $arg) {
         echo (new \Phalcon\Debug\Dump())->variable($arg);
-    }
-    
-    echo (new \Phalcon\Debug\Dump())->variable($isExit);
-  
-    if ($isExit != 'noexit') {
-        exit();
     }
 }

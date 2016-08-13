@@ -10,6 +10,12 @@ return $baseConfig->merge(new \Phalcon\Config(
             'voltCacheDir'=>WEB_ROOT.'cache/volt/'.APP_FILE_NAME.'/',
             'sessionCacheDir'=>WEB_ROOT.'cache/session/'.APP_FILE_NAME.'/',
             'urlExt' =>'.html',
+            'cookie' =>array(
+                'expire'=>TIME+60*60*24,
+                'path'=>'/',
+                'domain'=>'',
+                'useEncryption'=>false
+            ),
             //'viewsDir'=>WEB_ROOT.'public/template/admin/default/'
         ),
         'caches' => array(         
