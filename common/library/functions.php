@@ -9,10 +9,8 @@
  * @param   boolen $isAppend   
  * @return  boolen             
  * @example  
- * trigger_error ('Trigger a fatal error');
- * throw new \Exception("An error");
- * 3/0;
- * unlink('abc'); 
+ * mFile(WEB_ROOT.'cache/aaa/abc.html.txt','aaa',true)
+ * mFile(WEB_ROOT.'cache/aaa/abc.html.txt') 
  * @todo        
  */
 function mFile($filePath = '', $content = '', $isAppend = false) {
@@ -46,7 +44,8 @@ function mFile($filePath = '', $content = '', $isAppend = false) {
  * throw new \Exception("An error");
  * 3/0;
  * unlink('abc'); 
- * @todo        
+ * @todo     
+ * log error msg   
  */
 function showError($e, $type = 'phalconError') {
     $msg = PHP_EOL . DATE . ' ' . $type . ' fileName ' . $e->getFile() . PHP_EOL . 'fileLine ' . $e->getLine() . PHP_EOL . 'errorMessage ' . PHP_EOL . $e->getMessage() . PHP_EOL;
