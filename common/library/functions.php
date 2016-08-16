@@ -1,6 +1,98 @@
 <?php
 
 /**
+ * func 10 del dir   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $dirname  
+ * @param   boolen $isSelfDir   
+ * @return  boolen             
+ * @example  
+ * p(getDirList(WEB_ROOT.'cache'));
+ * @todo        
+ */
+function delDir($dirname,$isSelfDir=false){
+    $getDirList = getDirList($dirname);      
+    if(!$getDirList){
+        return true;
+    }
+    arsort($getDirList['dirList']);  
+    //del filename
+    if($getDirList['fileList']){
+        foreach ($getDirList['fileList'] as $key => $value) {
+            unlink($value);
+        }
+    }
+    //del dir
+    if($getDirList['dirList']){
+        foreach ($getDirList['dirList'] as $key => $value) {            
+            rmdir($value);
+        }
+    }            
+    if($isSelfDir) rmdir($dirname);     
+    return true;
+}
+
+/**
+ * func 9 del filename   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $filePath  
+ * @return  boolen             
+ * @example  
+ * p(getDirList(WEB_ROOT.'cache'));
+ * @todo        
+ */
+function delFile($filePath){
+    return file_exists($filePath)?unlink($filePath):true;
+}
+
+/**
+ * func 8 tree dirname   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $dirname  
+ * @return  boolen             
+ * @example  
+ * p(getDirList(WEB_ROOT.'cache'));
+ * @todo        
+ */
+function getDirList($dirname) {
+
+    global $result_demo;
+    if (!isset($result_demo)) {
+        $result_demo = array(
+            'totalCountDir' => 0,
+            'totalCountFile' => 0,
+            'dirList' => array(),
+            'fileList' => array(),
+            'totalSize' => 0,
+        );
+        if (!file_exists($dirname) || !is_dir($dirname)) {
+            return false;
+        }
+    }
+    
+    $handle = opendir($dirname);
+    while (false !== ($file = readdir($handle))) {
+        if ($file != "." && $file != "..") {
+            $path = $dirname . '/' . $file;
+            if (is_dir($path)) {
+                $result_demo['dirList'][] = $path;
+                $result_demo['totalCountDir'] += 1;
+                getDirList($path);
+            } else {
+                $result_demo['fileList'][] = $path;
+                $result_demo['totalSize'] += filesize($path);
+                $result_demo['totalCountFile'] += 1;
+            }
+        }
+    }
+    closedir($handle);
+    return $result_demo;
+}
+
+/**
  * func 7 read or write file   
  * @author  woshitongliango@126.com
  * @version 1.0
@@ -58,7 +150,7 @@ function showError($e, $type = 'phalconError') {
 }
 
 //cache try error
-set_error_handler(function($errorCode, $errorMessage, $errorFile, $errorLine) {
+set_error_handler(function($errorCode, $errorMessage, $errorFile, $errorLine) {     
     throw new ErrorException($errorMessage, 0, $errorCode, $errorFile, $errorLine);
     exit();
 });

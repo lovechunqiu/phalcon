@@ -20,7 +20,7 @@ define('DEBUG', true);
 define('ENVIROMENT','develop');
 
 try {
-    require_once WEB_ROOT . 'common/init/init.php';  
+    require_once WEB_ROOT . 'common/init/init.php';      
     $application = new Application($di);
     $handle = $application->handle();
     $getContent = $handle->getContent();
@@ -30,7 +30,7 @@ try {
     showError($e);
 } catch (\PDOException $e) {  
     showError($e, 'phalconPdoError');
-} catch (\Exception $e) {
+} catch (\Exception $e) {  
     showError($e, 'phalconDefaultError');
 }
 ?>

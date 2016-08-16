@@ -9,6 +9,19 @@ class DemoController extends ControllerBase
    
     public function indexAction()
     { 
+        
+        p('func 10 del dir 删除目录');
+        p(delDir(WEB_ROOT.'cache/aaa/',true));
+        die;        
+        
+        p('func 9 del filename 删除文件');
+        p(delFile(WEB_ROOT.'cache/aaa/abc.html.txt'));
+        die;
+        
+        p('func 8 tree dirname 便利目录');
+        p(getDirList(WEB_ROOT.'cache'));
+        die;
+        
         p('func 7 read or write file 读取或写入文件');
         p('写入文件',mFile(WEB_ROOT.'cache/aaa/abc.html.txt','aaa',true));
         p('读取文件',mFile(WEB_ROOT.'cache/aaa/abc.html.txt'));        
@@ -29,7 +42,7 @@ class DemoController extends ControllerBase
         p('设置一个值', cookie('name', 'value'));
         p('获取一个值', cookie('name'));
         p('获取全部', cookie());
-        //p('删除一个值', session('name', null));
+        //p('删除一个值', cookie('name', null));
         die;
         
         p('func 3 session manage session管理');
