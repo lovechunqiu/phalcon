@@ -1,7 +1,85 @@
 <?php
 
 /**
- * cookie manage   
+ * func 7 read or write file   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $filePath 
+ * @param   string $content  
+ * @param   boolen $isAppend   
+ * @return  boolen             
+ * @example  
+ * trigger_error ('Trigger a fatal error');
+ * throw new \Exception("An error");
+ * 3/0;
+ * unlink('abc'); 
+ * @todo        
+ */
+function mFile($filePath = '', $content = '', $isAppend = false) {
+    if (empty($content)) {
+        if (!isFileName($filePath) || !file_exists($filePath)) {
+            trigger_error($filePath . ' no exist!');
+        }
+        return file_get_contents($filePath);
+    }
+
+    if (isFileName($filePath) && mmkdir($filePath)) {
+        $ret = $isAppend ? file_put_contents($filePath, $content, FILE_APPEND) : file_put_contents($filePath, $content);
+        if (!$ret) {
+            trigger_error($filePath . ' write fail!');
+        }
+        return true;
+    } else {
+        trigger_error($filePath . ' operateion fail!');
+    }
+}
+
+/**
+ * func 6 show error   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   object $e 
+ * @param   string $type  phalconPdoError  phalconDefaultError phalconError
+ * @return  boolen             
+ * @example  
+ * trigger_error ('Trigger a fatal error');
+ * throw new \Exception("An error");
+ * 3/0;
+ * unlink('abc'); 
+ * @todo        
+ */
+function showError($e, $type = 'phalconError') {
+    $msg = PHP_EOL . DATE . ' ' . $type . ' fileName ' . $e->getFile() . PHP_EOL . 'fileLine ' . $e->getLine() . PHP_EOL . 'errorMessage ' . PHP_EOL . $e->getMessage() . PHP_EOL;
+    if (DEBUG) {
+        p($msg);
+        exit();
+    } else {
+        exit('not found');
+    }
+}
+
+//cache try error
+set_error_handler(function($errorCode, $errorMessage, $errorFile, $errorLine) {
+    throw new ErrorException($errorMessage, 0, $errorCode, $errorFile, $errorLine);
+    exit();
+});
+
+/**
+ * func 5 judge path if filename   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @param   string $path 
+ * @return  boolen             
+ * @example  
+ * p(isFileName(WEB_ROOT.'cache/abc.html.txt'),isFileName(WEB_ROOT.'cache/abc/')); 
+ * @todo        
+ */
+function isFileName($path = '') {
+    return isset(pathinfo($path)['extension']) ? true : false;
+}
+
+/**
+ * func 4 cookie manage   
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string $name 
@@ -15,9 +93,8 @@
  * @todo        
  * @doc //https://github.com/phalcon/cphalcon/blob/master/phalcon/http/response/cookies.zep      
  */
-
 function cookie($name = '', $value = '') {
-     
+
     $cookies = Com::getDIServer('cookies');
     $cookieConfig = Com::getDIServer('config')->application->cookie->toArray();
     //del name
@@ -45,7 +122,7 @@ function cookie($name = '', $value = '') {
 }
 
 /**
- * session manage   
+ * func 3 session manage   
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string $name 
@@ -91,23 +168,23 @@ function session($name = '', $value = '') {
 }
 
 /**
- * mkdir   
+ * func 2 mkdir   
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string $dirPath 
  * @return  boolen             
  * @example  
- * mmkdir(WEB_ROOT.'cache/mkdirdemo')      
+ * p('func 2 mkdir 创建目录',mmkdir(WEB_ROOT.'cache/mkdirdemo'));die;    
  * @todo error             
  */
 function mmkdir($dirPath) {
-    if (isset(pathinfo($dirPath)['extension'])) {
+    if (isFileName($dirPath)) {
         $dirPath = dirname($dirPath);
     }
 
     if (!is_dir($dirPath)) {
         if (!mkdir($dirPath, 0755, TRUE)) {
-            throwError($dirPath . 'mkdir error');
+            trigger_error($dirPath . 'mkdir error');
         }
     }
 
@@ -115,13 +192,13 @@ function mmkdir($dirPath) {
 }
 
 /**
- * print args  
+ * func 1 print args  
  * @author  woshitongliango@126.com
  * @version 1.0
  * @param   string int bool array res obj ……
  * @return             
  * @example  
- * p(__DIR__,1,true,['hello'=>'world']);       
+ * p('func 1 print args  参数打印',__DIR__,1,true,['hello'=>'world']);die;       
  * @todo              
  */
 function p() {

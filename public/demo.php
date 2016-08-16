@@ -1,6 +1,10 @@
 <?php
-
+error_reporting(0); 
+header('Content-Type:text/html;charset=utf-8');
+date_default_timezone_set("Etc/GMT-8"); 
 use Phalcon\Mvc\Application as Application;
+use \ErrorException as ErrorException;
+use \Exception as Exception;
 
 //应用模式
 define('APP_MODEL', 'MVC');
@@ -16,20 +20,17 @@ define('DEBUG', true);
 define('ENVIROMENT','develop');
 
 try {
-    require_once WEB_ROOT . 'common/init/init.php';
+    require_once WEB_ROOT . 'common/init/init.php';  
     $application = new Application($di);
     $handle = $application->handle();
     $getContent = $handle->getContent();
     echo $getContent;
     
-} catch (\Phalcon\Exception $e) {
-    p($e->getMessage());die;
-    phalconErrorLog($e);
-} catch (\PDOException $e) {
-   p($e->getMessage());die;
-    phalconErrorLog($e, 'phalconPdoError');
+} catch (\Phalcon\Exception $e) {   
+    showError($e);
+} catch (\PDOException $e) {  
+    showError($e, 'phalconPdoError');
 } catch (\Exception $e) {
-   p($e->getMessage());die;
-    phalconErrorLog($e, 'phalconDefaultError');
+    showError($e, 'phalconDefaultError');
 }
 ?>

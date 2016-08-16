@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL); 
-header('Content-Type:text/html;charset=utf-8');
-date_default_timezone_set("Etc/GMT-8"); 
 /*
  * 常量定义
  */
