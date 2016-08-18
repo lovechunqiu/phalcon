@@ -1,6 +1,57 @@
 <?php
 
 /**
+ * func 12 track point   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @return  int             
+ * @example  
+ * G('start'); log track point
+ * G('start','end'); diff point
+ * @todo        
+ */
+function G($start = 'start',$end = '',$isFile = false){
+    if(empty($end)){
+        if(!empty($_SERVER['track'][$start])){
+            trigger_error($start.' track point exists!');
+        }        
+        $tmp = debug_backtrace()[0];
+        //save track info
+        $_SERVER['track'][$start] = [
+            'startTime'=>mtime(),
+            'startFile'=>strtr($tmp['file'],[WEB_ROOT=>'']),
+            'line'=>$tmp['line'],
+            'mem'=>memory_get_usage(),
+            'include_files'=>get_included_files()
+            ];
+    }else{
+        if(empty($_SERVER['track'][$end])){
+            trigger_error($start.' track point exists!');
+        }         
+        $str = $start.' to '.$end.' ms:'.($_SERVER['track'][$end]['startTime']-$_SERVER['track'][$start]['startTime']).PHP_EOL;       
+        $str .= 'start '.$_SERVER['track'][$start]['startFile'].' line '.$_SERVER['track'][$start]['line'].PHP_EOL;   
+        $str .= 'end '.$_SERVER['track'][$end]['startFile'].' line '.$_SERVER['track'][$end]['line'].PHP_EOL; 
+        $str .= 'mem '.round(($_SERVER['track'][$end]['mem']-$_SERVER['track'][$start]['mem'])/1000,2).'M'.PHP_EOL;
+        
+        p($str,array_diff($_SERVER['track'][$end]['include_files'],$_SERVER['track'][$start]['include_files']));
+    }
+}
+
+/**
+ * func 11 microtime   
+ * @author  woshitongliango@126.com
+ * @version 1.0
+ * @return  int             
+ * @example  
+ * p(mtime());
+ * @todo        
+ */
+function mtime(){
+    $temp = explode(' ', microtime());
+    return round(($temp[0]+$temp[1])*1000);       
+}
+
+/**
  * func 10 del dir   
  * @author  woshitongliango@126.com
  * @version 1.0

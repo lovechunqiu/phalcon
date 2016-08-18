@@ -10,6 +10,20 @@ class DemoController extends ControllerBase
     public function indexAction()
     { 
         
+//        $catid= $this->dispatcher->getParam("catid");
+//        $_GET['abc']=222;
+//   
+//        p(Com::getData(),$catid,$_GET);die;//
+        
+        p('func 12 track point 建立跟踪点');
+        G('demo2');
+        G('demo1','demo2'); 
+       
+        
+        p('func 11 microtime 得到微妙时间');
+        p(mtime());
+        die;
+        
         p('func 10 del dir 删除目录');
         p(delDir(WEB_ROOT.'cache/aaa/',true));
         die;        
@@ -65,7 +79,14 @@ class DemoController extends ControllerBase
     
     public function demoAction()
     {  
-        p('demoColler demo action');   
+        //p('demoColler demo action'); 
+        $this->view->start();
+        echo 333;
+        $this->view->pick('demo/demo');
+        $this->view->finish();
+        $html = $this->view->getContent(); 
+        p($html);die;
+        p($this->view,$this->view->getContent());die;
     }
      
 }

@@ -71,22 +71,24 @@ $router->add('/:controller/:action'.$config->application->urlExt, array(
 
 //设置404
 $router->notFound(array(    
-   'controller' => 'more',
+   'controller' => 'error',
    'action'=> 'show404'
 ));
 
 
 
-//http://free.com/index-c12.html?a=1
+//http://my.demo.com/index-c12.html?a=1
 $router->add(
     "/(.*)-c([0-9]+)\.html",   
     array(
-        'controller' => 'index',
-        'action'     => 'demo',
+        'controller' => 'demo',
+        'action'     => 'index',
         'catid'       => 2, // ([0-9]{4})
 ))->convert('controller', function($controller) { 
+    //p($controller);
     return $controller;
-})->convert('action', function($action) {     
+})->convert('action', function($action) {  
+     //p($action);die;
     return $action;
 });
 
