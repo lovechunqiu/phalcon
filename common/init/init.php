@@ -10,6 +10,8 @@ define('DATE', date('Y-m-d H:i:s',TIME));
 //init common function  
 require_once(WEB_ROOT.'common/library/functions.php'); 
 
+G('demo1');
+
 //配置文件
 use Phalcon\Config\Adapter\Ini as ConfigIni; 
 use Phalcon\Config as Config;

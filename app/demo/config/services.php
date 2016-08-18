@@ -4,7 +4,8 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 
         
 $di->set('view', function () use ($di,$config){        
-    $view = new View();         
+    $view = new View();   
+    $view ->start();
     $view->setViewsDir($config->application->viewsDir);
     $view->registerEngines(array(
         ".html" => 'volt'
