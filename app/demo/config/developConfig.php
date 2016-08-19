@@ -9,6 +9,9 @@ return $baseConfig->merge(new \Phalcon\Config(
             'viewsDir'=>APP_PATH . 'views/',
             'voltCacheDir'=>WEB_ROOT.'cache/volt/'.APP_FILE_NAME.'/',            
             'urlExt' =>'.html',
+            'urlDepr' =>'-',
+            'defaultController' =>'demo',
+            'defaultAction' =>'demo',
             'session' =>array(
                 'type'=>'files',
                 'files'=>array(                  

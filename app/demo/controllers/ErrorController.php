@@ -15,7 +15,7 @@ class ErrorController extends ControllerBase
     
     public function show404Action()
     {  
-        p('demoColler 404  demo action');   
+        p($_SERVER,'demoColler 404  demo action');   
     }
      
 }

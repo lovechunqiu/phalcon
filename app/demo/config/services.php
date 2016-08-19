@@ -21,9 +21,9 @@ $di->set('volt', function ($view, $di) use ($config){
     $volt->setOptions(array(                     
         'stat' => true,
         'compileAlways' => true,
-        'compiledPath' => function ($templatePath) use($di, $config){           
-            $_SERVER['controllerName'] = $di['dispatcher']->getControllerName();            
-            $_SERVER['actionName']  = $di['dispatcher']->getActionName();    
+        'compiledPath' => function ($templatePath) use($di, $config){            
+            //$_SERVER['controllerName'] = $di['dispatcher']->getControllerName();            
+            //$_SERVER['actionName']  = $di['dispatcher']->getActionName();    
             $pathinfo = pathinfo($templatePath);             
             $path = $config->application->voltCacheDir.$_SERVER['controllerName'].'/'.$pathinfo['basename'];                
             mmkdir($path);

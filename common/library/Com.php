@@ -22,8 +22,9 @@ class Com extends \Phalcon\Mvc\User\Component{
  
     //获取get数据
     public static  function getData()
-    {          
-        return Com::getDIServer('request')->get();
+    {   
+        return $_GET;
+        //return Com::getDIServer('request')->get();
     }     
      
         

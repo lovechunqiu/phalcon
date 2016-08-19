@@ -9,11 +9,10 @@ class DemoController extends ControllerBase
    
     public function indexAction()
     { 
-        
-//        $catid= $this->dispatcher->getParam("catid");
-//        $_GET['abc']=222;
-//                    
-        p(Com::getData(),$_GET,session());die; 
+        $catid= $this->dispatcher->getParam("catid"); 
+		//$_GET['abc']=222;
+
+        p(func_get_args(),Com::getData(),session());die; 
         
         
         G('demo2');
@@ -84,14 +83,18 @@ class DemoController extends ControllerBase
     
     public function demoAction()
     {  
-        //p('demoColler demo action'); 
+        //$_GET['abc']=222;
+        //$params = $this->dispatcher->getParam("aaa");
+        p(Com::getData());die; 
+        
+//        p('demoColler demo action');die; 
         $this->view->start();
-        echo 333;
+//        echo 333;
         $this->view->pick('demo/demo');
-        $this->view->finish();
-        $html = $this->view->getContent(); 
-        p($html);die;
-        p($this->view,$this->view->getContent());die;
+     // $this->view->finish();
+       $html = $this->view->getContent(); 
+       p($html);die;
+//        p($this->view,$this->view->getContent());die;
     }
      
 }
