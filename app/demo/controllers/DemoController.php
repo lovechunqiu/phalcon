@@ -12,12 +12,17 @@ class DemoController extends ControllerBase
         
 //        $catid= $this->dispatcher->getParam("catid");
 //        $_GET['abc']=222;
-//   
-//        p(Com::getData(),$catid,$_GET);die;//
+//                    
+        p(Com::getData(),$_GET,session());die; 
         
-        p('func 12 track point 建立跟踪点');
+        
         G('demo2');
-        G('demo1','demo2'); 
+         //echo $homepage = file_get_contents('http://ss0.hao123img.com/res/r/image/2016-08-16/3a2c7a2b2edb77eadd10a0d0ea4a2e4d.png');die;
+        //p($_GET);die;
+         //sleep(3);
+        p('func 12 track point 建立跟踪点');
+        G('demo3');
+        G('demo2','demo3');die; 
        
         
         p('func 11 microtime 得到微妙时间');

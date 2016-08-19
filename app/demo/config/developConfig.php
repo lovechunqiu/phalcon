@@ -7,13 +7,21 @@ return $baseConfig->merge(new \Phalcon\Config(
             'demo' =>'admin config',
             'controllersDir'=>APP_PATH . 'controllers/',
             'viewsDir'=>APP_PATH . 'views/',
-            'voltCacheDir'=>WEB_ROOT.'cache/volt/'.APP_FILE_NAME.'/',
-            'sessionCacheDir'=>WEB_ROOT.'cache/session/'.APP_FILE_NAME.'/',
+            'voltCacheDir'=>WEB_ROOT.'cache/volt/'.APP_FILE_NAME.'/',            
             'urlExt' =>'.html',
+            'session' =>array(
+                'type'=>'files',
+                'files'=>array(                  
+                    'expire'=>TIME+60*60*24,
+                    'path'=>'/',
+                    'domain'=>'.demo.com',
+                    'sessionCacheDir'=>WEB_ROOT.'cache/session/'.APP_FILE_NAME.'/',                    
+                ),
+            ),            
             'cookie' =>array(
                 'expire'=>TIME+60*60*24,
                 'path'=>'/',
-                'domain'=>'',
+                'domain'=>'.demo.com',
                 'useEncryption'=>false
             ),
             //'viewsDir'=>WEB_ROOT.'public/template/admin/default/'

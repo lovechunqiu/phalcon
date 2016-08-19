@@ -31,6 +31,7 @@ use Phalcon\Tag as Tag;
 use Phalcon\Mvc\Model\Query\Lang as Lang;
 use Phalcon\Mvc\Router as Router;
 use Phalcon\DI\FactoryDefault\CLI as CliDI; 
+use Phalcon\Session\Adapter\Files as sessionFiles;
 
 
 
@@ -71,13 +72,26 @@ $di->set('dispatcher', function () use ($di) {
     $dispatcher->setEventsManager($eventsManager);
     return $dispatcher;
 });
-    
-$di->set('session', function () use($di,$config){      
-    mmkdir($config->application->sessionCacheDir);     
-    ini_set('session.save_handler','files');
-    ini_set('session.save_path',$config->application->sessionCacheDir);
-    $session = new SessionAdapter();                        
-    $session->start();
+
+//http://www.php.net/manual/zh/session.configuration.php    
+//https://github.com/phalcon/cphalcon/tree/master/phalcon/session/adapter
+$di->set('session', function () use($di,$config){   
+    $sessionType = $config->application->session->type;
+    $sessionConfig = $config->application->session->$sessionType->toArray();
+     
+    if($sessionType=='files'){
+		
+		mmkdir($sessionConfig['sessionCacheDir']);
+		ini_set('session.save_path',$sessionConfig['sessionCacheDir']);
+		ini_set('session.cookie_domain',$sessionConfig['domain']);
+		ini_set('session.cookie_lifetime',$sessionConfig['expire']);    
+		
+    }           
+	
+	$session = new sessionFiles();   
+	
+    $session->start();  
+	
     return $session;
 });
 
