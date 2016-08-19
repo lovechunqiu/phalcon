@@ -53,6 +53,7 @@ $registerDirs = array(
     $config->application->viewsDir, 
     $config->application->appLibrary,
     $config->application->appApi,
+    WEB_ROOT . $config->application->comApiDir,
     WEB_ROOT . $config->application->pluginsDir,
     WEB_ROOT . $config->application->libraryDir,
     WEB_ROOT . $config->application->modelsDir,           

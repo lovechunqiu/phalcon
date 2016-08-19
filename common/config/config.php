@@ -54,7 +54,8 @@ return new \Phalcon\Config(
             'scriptDir' => 'common/scripts/',
             'pluginsDir' =>'common/plugins/',
             'modelsDir' => 'common/models/',
-            'libraryDir' => 'common/library/',                            
+            'libraryDir' => 'common/library/',
+            'comApiDir' => 'common/api/',
             'demo' =>'common config',                
         )
     )
