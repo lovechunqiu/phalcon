@@ -50,7 +50,9 @@ $loader = new \Phalcon\Loader();
 //应用引导文件 定义目录啥的
 $registerDirs = array(
     $config->application->controllersDir,
-    $config->application->viewsDir,  
+    $config->application->viewsDir, 
+    $config->application->appLibrary,
+    $config->application->appApi,
     WEB_ROOT . $config->application->pluginsDir,
     WEB_ROOT . $config->application->libraryDir,
     WEB_ROOT . $config->application->modelsDir,           

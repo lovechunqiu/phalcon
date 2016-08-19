@@ -85,7 +85,7 @@ class DemoController extends ControllerBase
     {  
         //$_GET['abc']=222;
         //$params = $this->dispatcher->getParam("aaa");
-        p(Com::getData());die; 
+        p(Com::getData(),apiDemo::demo());die; 
         
 //        p('demoColler demo action');die; 
         $this->view->start();

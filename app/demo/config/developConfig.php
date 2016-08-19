@@ -7,6 +7,8 @@ return $baseConfig->merge(new \Phalcon\Config(
             'demo' =>'admin config',
             'controllersDir'=>APP_PATH . 'controllers/',
             'viewsDir'=>APP_PATH . 'views/',
+            'appLibrary'=>APP_PATH . 'library/',
+            'appApi'=>APP_PATH . 'api/',
             'voltCacheDir'=>WEB_ROOT.'cache/volt/'.APP_FILE_NAME.'/',            
             'urlExt' =>'.html',
             'urlDepr' =>'-',
