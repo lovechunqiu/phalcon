@@ -1,8 +1,5 @@
 <?php
 use Phalcon\Mvc\User\Component;
-use M\System\Language as Language;
-use M\System\Privs as Privs;
-use M\System\Vendor as Vendor;
 class Com extends \Phalcon\Mvc\User\Component{
             
     //获取di
@@ -22,9 +19,9 @@ class Com extends \Phalcon\Mvc\User\Component{
  
     //获取get数据
     public static  function getData()
-    {  
-        p( debug_backtrace());die;
-        return Com::getDIServer('request')->get();
+    {   
+        return $_GET;
+        //return Com::getDIServer('request')->get();
     }     
      
         

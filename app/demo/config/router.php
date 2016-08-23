@@ -42,32 +42,85 @@ $router->setDefaultAction('index');
  
 //设置默认控制器 默认方法
 $router->add('/', array(
-'controller' => 'index',
-'action' => 'index',
+'controller' => $config->application->defaultController,
+'action' => $config->application->defaultAction,
 ));
+ 
 
+
+
+$router->add('(/.*)*'.$config->application->urlExt, array(
+        'controller' => 1,      
+        'action' => 'index',
+))->convert('controller', function($controller) use($config) {  
+    $url = ltrim($controller,'/');    
+    $url = explode($config->application->urlDepr, $url);
+    $_SERVER['controllerName'] = $url[0];
+    $_SERVER['actionName'] = $config->application->defaultAction;
+    
+    if(count($url)>1){        
+        $_SERVER['actionName']  = $url[1];
+    }
+    
+    if(count($url)>3){
+        unset($url[1]);
+        unset($url[0]);
+        foreach ($url as $key=>$value) {
+            if($key%2==0){
+                $_GET[$value] = $url[$key+1];
+            }            
+        }         
+    }
+ 
+
+    return $_SERVER['controllerName'];
+})->convert('action', function($action) {  
+    return $_SERVER['actionName'];
+})->beforeMatch(function ($uri, $route) {    
+    //404
+    return true; 
+});
 
 
 //在控制器存在的情况下 设置默认方法
 //$router->add('/:controller.html|/:controller[/]{0,1}', array(	 
  
-$router->add('/:controller'.$config->application->urlExt, array(	
-        'controller' => 1,      
-        'action' => 'index',
-))->convert('controller', function($controller) {           
-    return $controller;
-});
-
- //全局.do规则 后续可以做分类的html形式
-$router->add('/:controller/:action'.$config->application->urlExt, array(	 
-        'controller' => 1,
-        'action' => 2,    
-))->convert('controller', function($controller) { 
-     
-    return $controller;
-})->convert('action', function($action) {     
-    return $action;
-});
+//$router->add('/:controller'.$config->application->urlExt, array(	
+//        'controller' => 1,      
+//        'action' => 'index',
+//))->convert('controller', function($controller) {  
+//     p($controller);die; 
+//    return $controller;
+//});
+//
+// //全局.do规则 后续可以做分类的html形式
+//$router->add('/:controller-:action-:params'.$config->application->urlExt, array(	 
+//        'controller' => 1,
+//        'action' => 2, 
+//        'params'=>3
+//))->convert('controller', function($controller) { 
+//    return $controller;
+//})->convert('action', function($action) {     
+//    return $action;
+//})->convert('params', function($params) {
+//    $url = ltrim($params,'/');    
+//    $url = explode('/', $url);
+//    if(count($url)>1){
+//        foreach ($url as $key=>$value) {
+//            if($key%2==0){
+//                $_GET[$value] = $url[$key+1];
+//            }            
+//        }
+//    } 
+//    
+//    return $params;
+//})->beforeMatch(function ($uri, $route) {
+//    
+//    //404
+//    return true;
+// 
+//});
+//
 
 //设置404
 $router->notFound(array(    
@@ -92,7 +145,7 @@ $router->add(
     return $action;
 });
 
-$controllerName = $router->getControllerName();    
-$actionName = $router->getActionName(); 
+//$controllerName = $router->getControllerName();    
+//$actionName = $router->getActionName(); 
 $router->handle();
 return $router;

@@ -239,6 +239,8 @@ function cookie($name = '', $value = '') {
 
     $cookies = Com::getDIServer('cookies');
     $cookieConfig = Com::getDIServer('config')->application->cookie->toArray();
+    $cookies = $cookies->useEncryption($cookieConfig['useEncryption']);
+    
     //del name
     if (!empty($name) && $value === null) {
         $cookies->get($name)->delete();
@@ -252,8 +254,7 @@ function cookie($name = '', $value = '') {
 
     //set name
     if (!empty($name) && !empty($value)) {
-        $cookies->useEncryption($cookieConfig['useEncryption'])->set($name, $value, $cookieConfig['expire'], $cookieConfig['path'])->send();
-        //p($cookies->get($name)->setPath('/index/'));die;
+        $cookies->set($name, $value, $cookieConfig['expire'], $cookieConfig['path'],null,$cookieConfig['domain'])->send();     
         return $cookies->has($name);
     }
 

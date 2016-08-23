@@ -22,7 +22,9 @@ define('ENVIROMENT','develop');
 try {
     require_once WEB_ROOT . 'common/init/init.php';      
     $application = new Application($di);
+    
     $handle = $application->handle();
+    //p($application,$handle);die;
     $getContent = $handle->getContent();
     echo $getContent;
     
